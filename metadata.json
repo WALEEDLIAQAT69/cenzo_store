@@ -1,0 +1,7 @@
+{
+  "name": "csenzo | Kinetic Streetwear & Footwear",
+  "description": "csenzo official online store featuring athletic streetwear, signature sneakers, capsule drops, and seamless shopping experience inspired by Ndure.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

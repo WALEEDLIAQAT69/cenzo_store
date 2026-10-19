@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && 
+        request.auth.token.email == 'waleedliaqat69@gmail.com' &&
+        request.auth.token.email_verified == true;
+    }
+
+    // Diagnostic connection test document
+    match /test/{testId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Products catalog
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Customer purchase orders
+    match /orders/{orderId} {
+      // Allow any customer (including guest COD checkout) to submit an order with valid schema
+      allow create: if isValidId(orderId) && 
+        incoming().total is number && 
+        incoming().total > 0 && 
+        incoming().items is list && 
+        incoming().items.size() > 0 && 
+        incoming().items.size() <= 50 && 
+        incoming().shippingAddress is map &&
+        incoming().id is string &&
+        incoming().status is string;
+
+      // Allow order tracking retrieval by ID
+      allow get: if isValidId(orderId);
+      
+      // Listing restricted to store admin OR authenticated customer for their own orders
+      allow list: if isAdmin() || (
+        isSignedIn() && (
+          resource.data.userId == request.auth.uid || 
+          resource.data.shippingAddress.email == request.auth.token.email
+        )
+      );
+
+      // Updates and deletions restricted to admin
+      allow update, delete: if isAdmin();
+    }
+
+    // VIP Newsletter subscribers
+    match /subscribers/{subscriberId} {
+      allow create: if isValidId(subscriberId) && 
+        incoming().email is string && 
+        incoming().email.size() >= 5 && 
+        incoming().email.size() <= 256;
+      allow get, list: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+  }
+}

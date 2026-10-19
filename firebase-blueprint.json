@@ -1,0 +1,94 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Footwear item available in the csenzo store catalogue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 256 },
+        "subtitle": { "type": "string", "maxLength": 512 },
+        "category": { "type": "string", "maxLength": 128 },
+        "gender": { "type": "string", "maxLength": 64 },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "discountPercent": { "type": "number" },
+        "isNew": { "type": "boolean" },
+        "isSale": { "type": "boolean" },
+        "isCapsule": { "type": "boolean" },
+        "badge": { "type": "string", "maxLength": 64 },
+        "thumbnail": { "type": "string", "maxLength": 2048 },
+        "images": { "type": "array" },
+        "colors": { "type": "array" },
+        "sizes": { "type": "array" },
+        "stockBySize": { "type": "object" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "tags": { "type": "array" },
+        "description": { "type": "string", "maxLength": 4096 }
+      },
+      "required": ["id", "name", "category", "gender", "price"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase transaction record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "trackingNumber": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 128 },
+        "items": { "type": "array" },
+        "shippingAddress": { "type": "object" },
+        "paymentMethod": { "type": "string", "maxLength": 64 },
+        "paymentTitle": { "type": "string", "maxLength": 128 },
+        "paymentStatus": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "subtotal": { "type": "number" },
+        "shippingFee": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "maxLength": 64 },
+        "estimatedDelivery": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "trackingNumber", "items", "shippingAddress", "total", "status"]
+    },
+    "Subscriber": {
+      "title": "Subscriber",
+      "description": "VIP newsletter club subscriber",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 256 },
+        "subscribedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email"]
+    },
+    "TestConnection": {
+      "title": "TestConnection",
+      "description": "Diagnostic document used to verify Firestore connectivity",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "maxLength": 64 }
+      }
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Live catalog of csenzo footwear items"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer order records and tracking states"
+    },
+    "/subscribers/{subscriberId}": {
+      "schema": "Subscriber",
+      "description": "Newsletter mailing list subscribers"
+    },
+    "/test/{testId}": {
+      "schema": "TestConnection",
+      "description": "Connection test document for runtime verification"
+    }
+  }
+}

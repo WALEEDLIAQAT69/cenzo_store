@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --font-anton: "Anton", sans-serif;
+  --font-grotesk: "Space Grotesk", sans-serif;
+  --color-csenzo-black: #0A0A0A;
+  --color-csenzo-blue: #0062FF;
+  --color-csenzo-pink: #FF3366;
+  --color-csenzo-red: #E60000;
+  --color-csenzo-lime: #DFFF00;
+  --color-csenzo-card: #F4F4F6;
+  --color-csenzo-surface: #fdf8f8;
+}
+
+@layer base {
+  body {
+    font-family: "Space Grotesk", sans-serif;
+    background-color: #fdf8f8;
+    color: #0A0A0A;
+  }
+
+  h1, h2, h3, .font-anton {
+    font-family: "Anton", sans-serif;
+  }
+}
+
+/* Hard offset brutalist shadow */
+.shadow-hard {
+  box-shadow: 4px 4px 0px #0A0A0A;
+}
+
+.shadow-hard-sm {
+  box-shadow: 2px 2px 0px #0A0A0A;
+}
+
+.shadow-hard-lg {
+  box-shadow: 6px 6px 0px #0A0A0A;
+}
+
+.shadow-hard-pink {
+  box-shadow: 4px 4px 0px #FF3366;
+}
+
+.shadow-hard-blue {
+  box-shadow: 4px 4px 0px #0062FF;
+}
+
+/* Running marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 22s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1edec;
+}
+::-webkit-scrollbar-thumb {
+  background: #0A0A0A;
+}
